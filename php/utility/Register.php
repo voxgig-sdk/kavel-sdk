@@ -1,0 +1,72 @@
+<?php
+declare(strict_types=1);
+
+// Kavel SDK utility registration
+
+require_once __DIR__ . '/../core/UtilityType.php';
+require_once __DIR__ . '/Clean.php';
+require_once __DIR__ . '/Done.php';
+require_once __DIR__ . '/MakeError.php';
+require_once __DIR__ . '/FeatureAdd.php';
+require_once __DIR__ . '/FeatureHook.php';
+require_once __DIR__ . '/FeatureInit.php';
+require_once __DIR__ . '/Fetcher.php';
+require_once __DIR__ . '/MakeFetchDef.php';
+require_once __DIR__ . '/MakeContext.php';
+require_once __DIR__ . '/MakeOptions.php';
+require_once __DIR__ . '/MakeRequest.php';
+require_once __DIR__ . '/MakeResponse.php';
+require_once __DIR__ . '/MakeResult.php';
+require_once __DIR__ . '/MakePoint.php';
+require_once __DIR__ . '/MakeSpec.php';
+require_once __DIR__ . '/MakeUrl.php';
+require_once __DIR__ . '/Param.php';
+require_once __DIR__ . '/PrepareAuth.php';
+require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
+require_once __DIR__ . '/PrepareHeaders.php';
+require_once __DIR__ . '/PrepareMethod.php';
+require_once __DIR__ . '/PrepareParams.php';
+require_once __DIR__ . '/PreparePath.php';
+require_once __DIR__ . '/PrepareQuery.php';
+require_once __DIR__ . '/ResultBasic.php';
+require_once __DIR__ . '/ResultBody.php';
+require_once __DIR__ . '/ResultHeaders.php';
+require_once __DIR__ . '/TransformRequest.php';
+require_once __DIR__ . '/TransformResponse.php';
+
+KavelUtility::setRegistrar(function (KavelUtility $u): void {
+    $u->clean = [KavelClean::class, 'call'];
+    $u->clean_add = [KavelClean::class, 'add'];
+    $u->clean_explain = [KavelDone::class, 'clean_explain'];
+    $u->done = [KavelDone::class, 'call'];
+    $u->make_error = [KavelMakeError::class, 'call'];
+    $u->feature_add = [KavelFeatureAdd::class, 'call'];
+    $u->feature_hook = [KavelFeatureHook::class, 'call'];
+    $u->feature_init = [KavelFeatureInit::class, 'call'];
+    $u->fetcher = [KavelFetcher::class, 'call'];
+    $u->make_fetch_def = [KavelMakeFetchDef::class, 'call'];
+    $u->make_context = [KavelMakeContext::class, 'call'];
+    $u->make_options = [KavelMakeOptions::class, 'call'];
+    $u->make_request = [KavelMakeRequest::class, 'call'];
+    $u->make_response = [KavelMakeResponse::class, 'call'];
+    $u->make_result = [KavelMakeResult::class, 'call'];
+    $u->make_point = [KavelMakePoint::class, 'call'];
+    $u->make_spec = [KavelMakeSpec::class, 'call'];
+    $u->make_url = [KavelMakeUrl::class, 'call'];
+    $u->param = [KavelParam::class, 'call'];
+    $u->prepare_auth = [KavelPrepareAuth::class, 'call'];
+    $u->prepare_body = [KavelPrepareBody::class, 'call'];
+    $u->prepare_headers = [KavelPrepareHeaders::class, 'call'];
+    $u->prepare_method = [KavelPrepareMethod::class, 'call'];
+    $u->prepare_params = [KavelPrepareParams::class, 'call'];
+    $u->prepare_path = [KavelPreparePath::class, 'call'];
+    $u->prepare_query = [KavelPrepareQuery::class, 'call'];
+    $u->graphql_body = [KavelGraphql::class, 'body'];
+    $u->graphql_errors = [KavelGraphql::class, 'errors'];
+    $u->result_basic = [KavelResultBasic::class, 'call'];
+    $u->result_body = [KavelResultBody::class, 'call'];
+    $u->result_headers = [KavelResultHeaders::class, 'call'];
+    $u->transform_request = [KavelTransformRequest::class, 'call'];
+    $u->transform_response = [KavelTransformResponse::class, 'call'];
+});

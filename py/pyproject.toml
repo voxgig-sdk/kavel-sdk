@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voxgig-sdk-kavel-sdk"
+version = "0.0.1"
+description = "Unofficial generated Python SDK for the Kavel Anonymous Task public API. Not affiliated with or endorsed by the upstream API provider."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+keywords = ["voxgig", "sdk", "generated-sdk", "openapi", "api-client", "kavel"]
+dependencies = [
+    "requests>=2.33",
+]
+
+[project.urls]
+Homepage = "https://github.com/voxgig-sdk/kavel-sdk"
+Repository = "https://github.com/voxgig-sdk/kavel-sdk"
+Issues = "https://github.com/voxgig-sdk/kavel-sdk/issues"
+
+# ONE package. core/entity/feature/utility were previously top-level packages;
+# those names are real PyPI distributions and common scratch filenames, and
+# Python searches the working directory first, so any of them beside the
+# caller silently shadowed the SDK's own. They now live inside
+# kavel_sdk/ where nothing can reach them.
+[tool.setuptools.packages.find]
+include = ["kavel_sdk*"]
+
+# Ship the PEP 561 py.typed marker(s) so the inline type hints reach consumers.
+[tool.setuptools.package-data]
+"*" = ["py.typed"]

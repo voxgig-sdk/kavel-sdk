@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Kavel Anonymous Task API",
+    "version": "1.0.0",
+    "description": "The keyless GET side of Kavel's anonymous AI image API: polling a generation task for its status and result image URLs. Anonymous output is 1K and watermarked.\n\nSources: https://kavel.readthedocs.io/en/latest/sdk/http/ and the reference it links, https://hanshs474.gitbook.io/kavel-api/kavel-anonymous-image-api.md, with the poll endpoint probed live on 2026-10-23 using the task id from that reference (2a04f52a-0da3-4629-8a3f-ecc5a507f34f), which still answers with a finished result, and with an unknown task id.\n\nNOT modelled: POST /api/ai/generate, which submits a job and is the only way to obtain a new task id. It is not GET, it spends credits from a small per-client wallet (15 credits; 5 per text-to-image, 15 per edit) under a 30-credit per-IP daily ceiling, and it was not probed. Without it this spec can only read tasks whose id is already known. Observed but unexplained: the image URL in a finished task changed between two polls of the same task. The `x-anon-id` header the docs say to send on the poll is not required: the probe without it returned the same result. Unverified: the item type of `videos` (always empty; assumed URL strings) and any status other than success."
+  },
+  "externalDocs": {
+    "description": "Kavel Anonymous Image API reference",
+    "url": "https://hanshs474.gitbook.io/kavel-api/kavel-anonymous-image-api"
+  },
+  "servers": [
+    {
+      "url": "https://www.kavel.ai"
+    }
+  ],
+  "paths": {
+    "/api/ai/anon-query": {
+      "get": {
+        "operationId": "getTask",
+        "summary": "Poll a generation task",
+        "description": "Returns the task's status and, once it has succeeded, its result image URLs. Status is not monotonic (processing can go back to pending); only success and failed are final. An unknown task id still answers HTTP 200, with code -1, message `query ai task failed` and no data.",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "required": true,
+            "description": "Task id returned when the job was submitted.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2a04f52a-0da3-4629-8a3f-ecc5a507f34f"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "required": true,
+            "description": "Generation provider; `kie` for every documented model.",
+            "schema": {
+              "type": "string",
+              "default": "kie"
+            },
+            "example": "kie"
+          },
+          {
+            "name": "mediaType",
+            "in": "query",
+            "required": true,
+            "description": "Media type of the task; `image` on the anonymous tier.",
+            "schema": {
+              "type": "string",
+              "default": "image"
+            },
+            "example": "image"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The task. `code` is 0 on success and -1 on failure (then `data` is absent).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "0 on success, -1 on failure.",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Task"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "description": "State of an image generation task.",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "pending, processing, success or failed. Only success and failed are final.",
+            "example": "success"
+          },
+          "images": {
+            "type": "array",
+            "description": "Result image URLs, present once the task has succeeded.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "watermarked": {
+            "type": "array",
+            "description": "One flag per image; anonymous output is watermarked.",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "videos": {
+            "type": "array",
+            "description": "Result video URLs (always empty on the anonymous tier, which cannot run video).",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "status"
+        ]
+      }
+    }
+  }
+}

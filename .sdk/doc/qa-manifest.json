@@ -1,0 +1,17 @@
+{
+  "files": [
+    "SUMMARY.md"
+  ],
+  "config": ".sdk/doc/qa/vale.ini",
+  "routes": {},
+  "quoted": {
+    "SUMMARY.md": [
+      "> The keyless GET side of Kavel&#39;s anonymous AI image API: polling a generation task for its status and result image URLs. Anonymous output is 1K and watermarked.\n>\n> Sources: https://kavel.readthedocs.io/en/latest/sdk/http/ and the reference it links, https://hanshs474.gitbook.io/kavel-api/kavel-anonymous-image-api.md, with the poll endpoint probed live on 2026-10-23 using the task id from that reference (2a04f52a-0da3-4629-8a3f-ecc5a507f34f), which still answers with a finished result, and with an unknown task id.\n>\n> NOT modelled: POST /api/ai/generate, which submits a job and is the only way to obtain a new task id. It is not GET, it spends credits from a small per-client wallet (15 credits; 5 per text-to-image, 15 per edit) under a 30-credit per-IP daily ceiling, and it was not probed. Without it this spec can only read tasks whose id is already known. Observed but unexplained: the image URL in a finished task changed between two polls of the same task. The `x-anon-id` header the docs say to send on the poll is not required: the probe without it returned the same result. Unverified: the item type of `videos` (always empty; assumed URL strings) and any status other than success.",
+      "One flag per image; anonymous output is watermarked.",
+      "Result image URLs, present once the task has succeeded.",
+      "Result video URLs (always empty on the anonymous tier, which cannot run video).",
+      "The task. `code` is 0 on success and -1 on failure (then `data` is absent)",
+      "pending, processing, success or failed. Only success and failed are final."
+    ]
+  }
+}

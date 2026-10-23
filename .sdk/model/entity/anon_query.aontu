@@ -1,0 +1,112 @@
+# Entity: anon_query
+
+main: kit: entity: anon_query: {
+
+  alias: field: {}
+
+  fields: {
+    images: {
+      h: "Images"
+      n: "images"
+      r: false
+      sh: "Result image URLs, present once the task has succeeded."
+      t: "`$ARRAY`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: true
+      sh: "pending, processing, success or failed."
+      t: "`$STRING`"
+    }
+    videos: {
+      h: "Videos"
+      n: "videos"
+      r: false
+      sh: "Result video URLs (always empty on the anonymous tier, which cannot run video)."
+      t: "`$ARRAY`"
+    }
+    watermarked: {
+      h: "Watermarked"
+      n: "watermarked"
+      r: false
+      sh: "One flag per image; anonymous output is watermarked."
+      t: "`$ARRAY`"
+    }
+  }
+
+  name: "anon_query"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/ai/anon-query"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: "image"
+                k: "query"
+                n: "media_type"
+                or: "mediaType"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "kie"
+                k: "query"
+                n: "provider"
+                or: "provider"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "2a04f52a-0da3-4629-8a3f-ecc5a507f34f"
+                k: "query"
+                n: "task_id"
+                or: "taskId"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/ai/anon-query"
+          q: {
+            exist: [
+              "media_type"
+              "provider"
+              "task_id"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "ai"
+            }
+            {
+              lit: "anon-query"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

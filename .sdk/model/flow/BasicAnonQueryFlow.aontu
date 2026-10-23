@@ -1,0 +1,28 @@
+# BasicAnonQueryFlow
+
+main: kit: flow: BasicAnonQueryFlow:
+{
+  entity: "anon_query",
+  kind: "basic",
+  name: "BasicAnonQueryFlow",
+  step: [
+    {
+      i: {
+        ref: "anon_query_ref01",
+        srcdatavar: "anon_query_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-anon_query_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicAnonQueryFlow"
+}

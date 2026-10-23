@@ -1,0 +1,44 @@
+{
+  "existing": {
+    "anon_query": {
+      "ANON_QUERY00": {
+        "images": [],
+        "status": "s29",
+        "videos": [],
+        "watermarked": [],
+        "id": "ANON_QUERY00"
+      },
+      "ANON_QUERY01": {
+        "images": [],
+        "status": "s51",
+        "videos": [],
+        "watermarked": [],
+        "id": "ANON_QUERY01"
+      },
+      "ANON_QUERY02": {
+        "images": [],
+        "status": "s79",
+        "videos": [],
+        "watermarked": [],
+        "id": "ANON_QUERY02"
+      }
+    }
+  },
+  "new": {
+    "anon_query": {
+      "anon_query_ref01": {
+        "images": [],
+        "status": "sa1",
+        "videos": [],
+        "watermarked": []
+      }
+    }
+  },
+  "requests": {
+    "GET /api/ai/anon-query": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}
